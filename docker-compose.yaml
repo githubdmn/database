@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  mongodb:
+    container_name: test-mongo
+    image: mongo:latest
+    volumes:
+      - mongodb:/data/db
+    env_file:
+      - .env
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+    restart: always
+volumes:
+  mongodb:
