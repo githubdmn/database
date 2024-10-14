@@ -1,0 +1,23 @@
+
+services:
+  mysql:
+    env_file:
+      - .env
+    image: mysql:lts
+    container_name: learning_mysql
+    restart: always
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    expose:
+      - ${MYSQL_PORT}
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-db:/var/lib/mysql
+      - ./scripts:/home/scripts:ro
+    user: "999:999"
+volumes:
+        mysql-db:
