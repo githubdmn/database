@@ -2,15 +2,18 @@ SELECT
         *
 FROM
         department;
+		
 SELECT
         dept_id,
         name
 FROM
         department;
+		
 SELECT
         name
 FROM
         department;
+		
 SELECT
         emp_id          ,
         'ACTIVE'        ,
@@ -18,10 +21,12 @@ SELECT
         UPPER(lname)
 FROM
         employee;
+		
 SELECT
         VERSION(),
         USER()   ,
         DATABASE();
+		
 SELECT
         emp_id                        ,
         'ACTIVE'         AS status    ,     -- AS can be ommited
@@ -29,10 +34,12 @@ SELECT
         UPPER(lname)     AS last_name_upper -- AS can be ommited
 FROM
         employee;
+		
 SELECT
         cust_id
 FROM
         account;
+		
 -- REMOVING DUPLICATES
 SELECT DISTINCT
         cust_id
