@@ -21,3 +21,6 @@ services:
     user: "999:999"
 volumes:
         mysql-db:
+        
+# docker exec -it learning_mysql mysql -u root -p
+
