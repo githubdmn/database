@@ -1,6 +1,6 @@
 **SQL Query Clauses**
 
-SQL queries are constructed using various clauses to retrieve specific data from a database. Here's a breakdown of the most common ones:
+SQL queries are constructed using various clauses to retrieve specific data from a database. 
 
 **Core Clauses**
 
