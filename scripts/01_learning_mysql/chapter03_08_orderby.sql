@@ -13,3 +13,4 @@ FROM
 ORDER BY
         open_emp_id,
         product_cd;
+		

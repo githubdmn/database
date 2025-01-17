@@ -19,3 +19,4 @@ FROM
 employee as e
 INNER JOIN department as d ON e.dept_id = d.dept_id;
 */
+

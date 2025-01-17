@@ -16,3 +16,4 @@ FROM
 WHERE 
 	status = 'CLOSED' AND 
 	YEAR(close_date) = 2002;
+	

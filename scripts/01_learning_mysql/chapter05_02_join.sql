@@ -9,3 +9,5 @@ FROM
 	-- the database server generates CARTESIAN PRODUCT
 	-- which is permitation of the two tables (18 emp x 3 dep = 54 permutations)
 	-- This is called "cross join"
+	
+	

@@ -64,3 +64,4 @@ WHERE
 	p.product_type_cd = 'ACCOUNT' 
 ORDER BY 
 	product_cd, cust_id; 
+	

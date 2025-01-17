@@ -12,3 +12,4 @@ GROUP BY
         d.name
 HAVING
         COUNT(e.emp_id) > 2;
+		
