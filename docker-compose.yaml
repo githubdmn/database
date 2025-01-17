@@ -23,4 +23,7 @@ volumes:
         mysql-db:
         
 # docker exec -it learning_mysql mysql -u root -p
+# source /home/scripts/check.sql
+# USE bank;
+# source /home/scripts/01_learning_mysql/chapter
 
