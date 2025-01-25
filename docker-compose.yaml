@@ -27,5 +27,5 @@ volumes:
 # source /home/scripts/check.sql
 # USE bank;
 # source /home/scripts/01_learning_mysql/chapter
-# docker exec -it learning_mysql mysql -u root -proot -h127.0.0.1 bank
+# docker exec -it learning_mysql mysql -u root -proot -Dbank
 
