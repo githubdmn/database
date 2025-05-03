@@ -17,7 +17,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - mysql-db:/var/lib/mysql
-      - ./scripts:/home/scripts:ro
+      #- ./scripts:/home/scripts:ro
+      - ./scripts/01_learning_mysql:/scripts:ro
     user: "999:999"
 volumes:
         mysql-db:
