@@ -4,8 +4,8 @@
 
 SELECT employee.fname, employee.lname, department.name
 FROM employee 
-  CROSS JOIN department
-  ON employee.dept_id = department.dept_id; -- ❌ Invalid syntax
+  CROSS JOIN department;
+  -- ON employee.dept_id = department.dept_id; -- ❌ Invalid syntax
 
 -- CROSS JOIN creates a Cartesian product (every combination of rows from both tables) first.
 -- The ON clause is then applied after the Cartesian product is created.
