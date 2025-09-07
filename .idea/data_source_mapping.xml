@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/9d508ac4-0075-4d28-a943-9516e11fa572/console.sql" value="9d508ac4-0075-4d28-a943-9516e11fa572" />
+    <file url="file://$PROJECT_DIR$/mysql.session.sql" value="9d508ac4-0075-4d28-a943-9516e11fa572" />
+    <file url="file://$PROJECT_DIR$/scripts/01-create-tables.sql" value="9d508ac4-0075-4d28-a943-9516e11fa572" />
+    <file url="file://$PROJECT_DIR$/scripts/check.sql" value="9d508ac4-0075-4d28-a943-9516e11fa572" />
+    <file url="file://$PROJECT_DIR$/scripts/lite-mysql/auth_user.sql" value="9d508ac4-0075-4d28-a943-9516e11fa572" />
+    <file url="file://$PROJECT_DIR$/scripts/lite-mysql/database.sql" value="9d508ac4-0075-4d28-a943-9516e11fa572" />
+    <file url="file://$PROJECT_DIR$/scripts/lite-sqlite/auth_user.sql" value="9d508ac4-0075-4d28-a943-9516e11fa572" />
+  </component>
+</project>
