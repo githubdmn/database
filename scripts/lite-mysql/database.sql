@@ -1,0 +1,5 @@
+CREATE DATABASE  lite;
+-- USE lite;
+GRANT ALL PRIVILEGES
+    ON lite.*
+TO 'user'@'%' WITH GRANT OPTION;
