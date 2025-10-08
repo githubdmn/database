@@ -1,3 +1,6 @@
+# MySQL docker compose
+`docker compose up -d mysql`
+
 # MySQL (using your credentials)
 `docker exec -it general_mysql mysql -u root -proot -D general`
 # Or from host machine:
@@ -46,3 +49,47 @@ docker exec -it general_mysql mysql -u root -proot -Dbank
 
 ```
 
+### .env
+```
+
+# MariaDB environment variables
+MARIADB_PORT=3306
+# Database details
+MARIADB_DATABASE=general
+MARIADB_USER=user
+MARIADB_PASSWORD=password
+MARIADB_ROOT=root
+MARIADB_ROOT_PASSWORD=root
+
+# MySQL environment variables
+MYSQL_PORT=3306
+# Database details
+MYSQL_DATABASE=general
+MYSQL_USER=user
+MYSQL_PASSWORD=password
+MYSQL_ROOT=root
+MYSQL_ROOT_PASSWORD=root
+
+# PostgreSQL
+POSTGRES_PORT=5432
+POSTGRES_DB=general
+POSTGRES_USER=app_user
+POSTGRES_PASSWORD=app_password
+POSTGRES_ROOT_PASSWORD=root
+
+# MongoDB
+MONGODB_PORT=27017
+MONGODB_DATABASE=general
+MONGODB_ROOT_USERNAME=root
+MONGODB_ROOT_PASSWORD=root
+
+# Redis
+REDIS_PORT=6379
+REDIS_PASSWORD=redis_password
+
+MARIADB_PORT_EXTERN=3308
+MYSQL_PORT_EXTERN=3307
+POSTGRES_PORT_EXTERN=5433
+MONGODB_PORT_EXTERN=27018
+REDIS_PORT_EXTERN=6380
+```

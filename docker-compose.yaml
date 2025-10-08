@@ -1,4 +1,35 @@
 services:
+
+  mariadb:
+    env_file:
+      - .env
+    image: mariadb:lts
+    container_name: general_mariadb
+    restart: always
+    ports:
+      - ${MARIADB_PORT_EXTERN}:${MARIADB_PORT}
+    environment:
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    command: >
+      --skip-log-bin
+      --innodb-buffer-pool-size=64M
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mariadb-db:/var/lib/mysql
+      - ./scripts/mysql:/scripts:ro
+    networks:
+      - db_network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p${MARIADB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5          # 3 is often too low on slow boxes
+      start_period: 30s   # give InnoDB time to start
+
   mysql:
     env_file:
       - .env
@@ -15,7 +46,7 @@ services:
     command: --skip-log-bin --innodb-buffer-pool-size=64M
     volumes:
       - mysql-db:/var/lib/mysql
-      - ./scripts/01_learning_mysql:/scripts:ro
+      - ./scripts/mysql:/scripts:ro
     networks:
       - db_network
     healthcheck:
@@ -93,6 +124,7 @@ services:
       - db_network
 
 volumes:
+  mariadb-db:
   mysql-db:
   postgres-db:
   mongodb-data:
@@ -101,3 +133,5 @@ volumes:
 networks:
   db_network:
     driver: bridge
+
+

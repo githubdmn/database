@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/scripts/01_learning_mysql/chapter05_exercise.sql" value="fe78c09e-fac4-423d-ba73-97c3d5ac01f5" />
-    <file url="file://$PROJECT_DIR$/scripts/01_learning_mysql/chapter06_01_union.sql" value="fe78c09e-fac4-423d-ba73-97c3d5ac01f5" />
     <file url="file://$PROJECT_DIR$/scripts/check.sql" value="fe78c09e-fac4-423d-ba73-97c3d5ac01f5" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter01_create_user.sql" value="fe78c09e-fac4-423d-ba73-97c3d5ac01f5" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter05_exercise.sql" value="fe78c09e-fac4-423d-ba73-97c3d5ac01f5" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter06_01_union.sql" value="fe78c09e-fac4-423d-ba73-97c3d5ac01f5" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter06_02_instersect.sql" value="fe78c09e-fac4-423d-ba73-97c3d5ac01f5" />
   </component>
 </project>

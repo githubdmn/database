@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/scripts/01_learning_mysql/chapter02_create_bank_schema.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/scripts/01_learning_mysql/chapter03_01_query_primer.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/scripts/01_learning_mysql/chapter05_exercise.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/scripts/01_learning_mysql/chapter06_01_union.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/scripts/check.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter01_create_user.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter02_create_bank_schema.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter03_01_query_primer.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter05_exercise.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter06_01_union.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter06_02_instersect.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter06_03_except.sql" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>

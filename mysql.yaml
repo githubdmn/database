@@ -1,0 +1,36 @@
+services:
+
+  mysql:
+    env_file:
+      - .env
+    image: mysql:lts
+    container_name: general_mysql
+    restart: always
+    ports:
+      - ${MYSQL_PORT_EXTERN}:${MYSQL_PORT}
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    command: --skip-log-bin --innodb-buffer-pool-size=64M
+    volumes:
+      - mysql-db:/var/lib/mysql
+      - ./scripts/mysql:/scripts:ro
+    networks:
+      - mysql_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+
+volumes:
+  mysql-db:
+
+networks:
+  mysql_network:
+    driver: bridge
+
+
