@@ -3,81 +3,101 @@ services:
     env_file:
       - .env
     image: mysql:lts
-    container_name: learning_mysql
+    container_name: general_mysql
     restart: always
     ports:
-      - ${MYSQL_PORT}:${MYSQL_PORT_EXTERN}
-    expose:
-      - ${MYSQL_PORT_EXTERN}
+      - ${MYSQL_PORT_EXTERN}:${MYSQL_PORT}
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    command: --skip-log-bin --innodb-buffer-pool-size=64M
     volumes:
       - mysql-db:/var/lib/mysql
-      #- ./scripts:/home/scripts:ro
       - ./scripts/01_learning_mysql:/scripts:ro
-    user: "999:999"
+    networks:
+      - db_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
   postgres:
     env_file:
       - .env
-    image: postgres:latest
-    container_name: learning_postgres
+    image: postgres:alpine
+    container_name: general_postgres
     restart: always
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT_EXTERN}
-    expose:
-      - ${POSTGRES_PORT_EXTERN}
+      - ${POSTGRES_PORT_EXTERN}:${POSTGRES_PORT}
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_ROOT_PASSWORD: ${POSTGRES_ROOT_PASSWORD}
+    command: postgres -c shared_buffers=64MB -c max_connections=50
     volumes:
       - postgres-db:/var/lib/postgresql/data
       - ./scripts/postgres:/scripts:ro
-    user: "999:999"
+    networks:
+      - db_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
   mongodb:
     env_file:
       - .env
     image: mongo:latest
-    container_name: learning_mongodb
+    container_name: general_mongodb
     restart: always
     ports:
-      - ${MONGODB_PORT}:${MONGODB_PORT_EXTERN}
-    expose:
-      - ${MONGODB_PORT_EXTERN}
+      - ${MONGODB_PORT_EXTERN}:${MONGODB_PORT}
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGODB_DATABASE}
+    command: mongod --wiredTigerCacheSizeGB 0.25
     volumes:
       - mongodb-data:/data/db
       - ./scripts/mongodb:/scripts:ro
-    user: "999:999"
+    networks:
+      - db_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
   redis:
     env_file:
       - .env
     image: redis:alpine
-    container_name: learning_redis
+    container_name: general_redis
     restart: always
     ports:
-      - ${REDIS_PORT}:${REDIS_PORT_EXTERN}
-    expose:
-      - ${REDIS_PORT_EXTERN}
+      - ${REDIS_PORT_EXTERN}:${REDIS_PORT}
     command:
       - redis-server
       - --requirepass ${REDIS_PASSWORD}
-      - --appendonly yes  # Enable persistence
-      - --maxmemory 256mb # Set memory limit
-      - --maxmemory-policy allkeys-lru # Eviction policy
+      - --appendonly yes
+      - --maxmemory 256mb
+      - --maxmemory-policy allkeys-lru
     volumes:
       - redis-data:/data
       - ./scripts/redis:/scripts:ro
-    user: "999:999"
+    networks:
+      - db_network
+
 volumes:
   mysql-db:
   postgres-db:
   mongodb-data:
   redis-data:
+
+networks:
+  db_network:
+    driver: bridge
