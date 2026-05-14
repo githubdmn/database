@@ -9,6 +9,8 @@
     <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter06_01_union.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter06_02_instersect.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter06_03_except.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter07_01_string_data.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter07_02_string_manipulation.sql" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>
