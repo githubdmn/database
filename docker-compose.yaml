@@ -24,11 +24,14 @@ services:
     networks:
       - db_network
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p${MARIADB_ROOT_PASSWORD}"]
+      test:
+        - "CMD-SHELL"
+        - |
+          mariadb-admin ping -h 127.0.0.1 --user=root --password=$${MARIADB_ROOT_PASSWORD} --silent
       interval: 5s
       timeout: 3s
       retries: 5          # 3 is often too low on slow boxes
-      start_period: 30s   # give InnoDB time to start
+      start_period: 45s   # give InnoDB time to start
 
   mysql:
     env_file:
