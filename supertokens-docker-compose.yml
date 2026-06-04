@@ -1,0 +1,41 @@
+# SuperTokens — headless auth backend
+# Connects to the shared db_network from your databases compose file.
+# Docs: https://supertokens.com/docs/passwordless/pre-built-ui/setup/core/with-docker
+#
+# NOTE: SuperTokens dropped MySQL/MongoDB support in v11+; PostgreSQL only.
+#
+# Required .env variables (create a .env file next to this file):
+#   SUPERTOKENS_PG_USER      postgres user (must exist in the shared postgres)
+#   SUPERTOKENS_PG_PASSWORD  postgres password
+#   SUPERTOKENS_PG_DB        database name  (e.g. supertokens)
+#   SUPERTOKENS_API_KEY      optional secret to lock down the core HTTP API
+#   POSTGRES_PORT            internal port of your postgres container (default 5432)
+#   POSTGRES_CONTAINER       service/container name in the db_network (general_postgres)
+
+services:
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:latest
+    container_name: auth_supertokens
+    restart: unless-stopped
+    ports:
+      - "3567:3567"           # Core API — your app SDK connects here
+    environment:
+      POSTGRESQL_CONNECTION_URI: "postgresql://${SUPERTOKENS_PG_USER}:${SUPERTOKENS_PG_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${SUPERTOKENS_PG_DB}?search_path=${SUPERTOKENS_PG_SCHEMA}"
+      # Uncomment to require an API key on every core request:
+      # API_KEYS: ${SUPERTOKENS_API_KEY}
+    networks:
+      - db_network            # joins the existing network so it can reach general_postgres
+    healthcheck:
+      test: >
+        bash -c 'exec 3<>/dev/tcp/127.0.0.1/3567 &&
+          echo -e "GET /hello HTTP/1.1\r\nhost: 127.0.0.1:3567\r\nConnection: close\r\n\r\n" >&3 &&
+          cat <&3 | grep "Hello"'
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  db_network:
+    external: true
+    name: database_db_network

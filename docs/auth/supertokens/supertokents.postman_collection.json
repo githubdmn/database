@@ -1,0 +1,509 @@
+{
+  "info": {
+    "_postman_id": "94cef8c4-21e6-4b20-a19f-3cd8adadedf4",
+    "name": "supertokents",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "10205969",
+    "_collection_link": "https://go.postman.co/collection/10205969-94cef8c4-21e6-4b20-a19f-3cd8adadedf4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "hello",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{api}}/hello",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "hello"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create_user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const response = pm.response.json();",
+              "    ",
+              "    if (response.status === \"OK\") {",
+              "        // Save user ID",
+              "        if (response.user?.id) {",
+              "            pm.collectionVariables.set(\"user_id\", response.user.id);",
+              "            console.log(\"✓ User ID saved:\", response.user.id);",
+              "        }",
+              "        ",
+              "        // Save recipe user ID",
+              "        if (response.recipeUserId) {",
+              "            pm.collectionVariables.set(\"recipe_user_id\", response.recipeUserId);",
+              "            console.log(\"✓ Recipe User ID saved:\", response.recipeUserId);",
+              "        }",
+              "        ",
+              "        // Save email (useful for sign in)",
+              "        if (response.user?.emails && response.user.emails.length > 0) {",
+              "            pm.collectionVariables.set(\"user_email\", response.user.emails[0]);",
+              "            console.log(\"✓ User email saved:\", response.user.emails[0]);",
+              "        }",
+              "        ",
+              "        // Save tenant ID",
+              "        if (response.user?.tenantIds && response.user.tenantIds.length > 0) {",
+              "            pm.collectionVariables.set(\"tenant_id\", response.user.tenantIds[0]);",
+              "            console.log(\"✓ Tenant ID saved:\", response.user.tenantIds[0]);",
+              "        }",
+              "        ",
+              "        // Save time joined (for debugging)",
+              "        if (response.user?.timeJoined) {",
+              "            const joinDate = new Date(response.user.timeJoined);",
+              "            console.log(\"  User joined:\", joinDate.toLocaleString());",
+              "        }",
+              "        ",
+              "        // Optional: Save entire user object for reference",
+              "        pm.collectionVariables.set(\"user_object\", JSON.stringify(response.user));",
+              "        ",
+              "    } else if (response.status === \"EMAIL_ALREADY_EXISTS_ERROR\") {",
+              "        console.log(\"⚠️ User already exists with this email\");",
+              "        console.log(\"  Message:\", response.message);",
+              "    } else {",
+              "        console.log(\"❌ User creation failed:\", response.status);",
+              "    }",
+              "} else {",
+              "    console.log(\"❌ Request failed with status:\", pm.response.code);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"test@mail.com\",\n    \"password\": \"my_password\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{api}}/recipe/signup",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "recipe",
+            "signup"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "create_user",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"test@mail.com\",\n    \"password\": \"my_password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api}}/recipe/signup",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "recipe",
+                "signup"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "479"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 04 Jun 2026 13:32:00 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"OK\",\n    \"user\": {\n        \"id\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n        \"isPrimaryUser\": false,\n        \"tenantIds\": [\n            \"public\"\n        ],\n        \"timeJoined\": 1780579920081,\n        \"emails\": [\n            \"test@mail.com\"\n        ],\n        \"phoneNumbers\": [],\n        \"thirdParty\": [],\n        \"webauthn\": {\n            \"credentialIds\": []\n        },\n        \"loginMethods\": [\n            {\n                \"tenantIds\": [\n                    \"public\"\n                ],\n                \"recipeUserId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n                \"verified\": false,\n                \"timeJoined\": 1780579920081,\n                \"recipeId\": \"emailpassword\",\n                \"email\": \"test@mail.com\"\n            }\n        ]\n    },\n    \"recipeUserId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const response = pm.response.json();",
+              "    ",
+              "    if (response.status === \"OK\") {",
+              "        // Save user ID",
+              "        if (response.user?.id) {",
+              "            pm.collectionVariables.set(\"user_id\", response.user.id);",
+              "            console.log(\"✓ User ID saved:\", response.user.id);",
+              "        }",
+              "        ",
+              "        // Save recipe user ID",
+              "        if (response.recipeUserId) {",
+              "            pm.collectionVariables.set(\"recipe_user_id\", response.recipeUserId);",
+              "            console.log(\"✓ Recipe User ID saved:\", response.recipeUserId);",
+              "        }",
+              "        ",
+              "        // Save email (useful for subsequent sign ins)",
+              "        if (response.user?.emails && response.user.emails.length > 0) {",
+              "            pm.collectionVariables.set(\"user_email\", response.user.emails[0]);",
+              "            console.log(\"✓ User email saved:\", response.user.emails[0]);",
+              "        }",
+              "        ",
+              "        // Save tenant ID",
+              "        if (response.user?.tenantIds && response.user.tenantIds.length > 0) {",
+              "            pm.collectionVariables.set(\"tenant_id\", response.user.tenantIds[0]);",
+              "            console.log(\"✓ Tenant ID saved:\", response.user.tenantIds[0]);",
+              "        }",
+              "        ",
+              "        // Save login methods info",
+              "        if (response.user?.loginMethods && response.user.loginMethods.length > 0) {",
+              "            const loginMethod = response.user.loginMethods[0];",
+              "            pm.collectionVariables.set(\"recipe_id\", loginMethod.recipeId);",
+              "            console.log(\"✓ Recipe ID saved:\", loginMethod.recipeId);",
+              "            console.log(\"  Email verified:\", loginMethod.verified);",
+              "        }",
+              "        ",
+              "        // Save time joined (for debugging)",
+              "        if (response.user?.timeJoined) {",
+              "            const joinDate = new Date(response.user.timeJoined);",
+              "            console.log(\"  User joined:\", joinDate.toLocaleString());",
+              "        }",
+              "        ",
+              "        // Optional: Save entire user object for reference",
+              "        pm.collectionVariables.set(\"user_object\", JSON.stringify(response.user));",
+              "        ",
+              "        console.log(\"✅ Successfully signed in\");",
+              "        ",
+              "    } else {",
+              "        console.log(\"❌ Sign in failed:\", response.status);",
+              "        if (response.message) {",
+              "            console.log(\"  Message:\", response.message);",
+              "        }",
+              "    }",
+              "} else {",
+              "    console.log(\"❌ Request failed with status:\", pm.response.code);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"test@mail.com\",\n    \"password\": \"my_password\"\n}"
+        },
+        "url": {
+          "raw": "{{api}}/recipe/signin",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "recipe",
+            "signin"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "login",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"test@mail.com\",\n    \"password\": \"my_password\"\n}"
+            },
+            "url": {
+              "raw": "{{api}}/recipe/signin",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "recipe",
+                "signin"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "479"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 04 Jun 2026 15:01:18 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"OK\",\n    \"user\": {\n        \"id\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n        \"isPrimaryUser\": false,\n        \"tenantIds\": [\n            \"public\"\n        ],\n        \"timeJoined\": 1780579920081,\n        \"emails\": [\n            \"test@mail.com\"\n        ],\n        \"phoneNumbers\": [],\n        \"thirdParty\": [],\n        \"webauthn\": {\n            \"credentialIds\": []\n        },\n        \"loginMethods\": [\n            {\n                \"tenantIds\": [\n                    \"public\"\n                ],\n                \"recipeUserId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n                \"verified\": false,\n                \"timeJoined\": 1780579920081,\n                \"recipeId\": \"emailpassword\",\n                \"email\": \"test@mail.com\"\n            }\n        ]\n    },\n    \"recipeUserId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "create_session",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const response = pm.response.json();",
+              "    ",
+              "    if (response.status === \"OK\") {",
+              "        // Save tokens to COLLECTION variables",
+              "        if (response.accessToken?.token) {",
+              "            pm.collectionVariables.set(\"access_token\", response.accessToken.token);",
+              "            console.log(\"✓ Access token saved to collection\");",
+              "        }",
+              "        ",
+              "        if (response.refreshToken?.token) {",
+              "            pm.collectionVariables.set(\"refresh_token\", response.refreshToken.token);",
+              "            console.log(\"✓ Refresh token saved to collection\");",
+              "        }",
+              "        ",
+              "        // Save session info",
+              "        if (response.session?.handle) {",
+              "            pm.collectionVariables.set(\"session_handle\", response.session.handle);",
+              "        }",
+              "        ",
+              "        if (response.session?.userId) {",
+              "            pm.collectionVariables.set(\"user_id\", response.session.userId);",
+              "        }",
+              "        ",
+              "        // Log expiry",
+              "        if (response.accessToken?.expiry) {",
+              "            const expiryDate = new Date(response.accessToken.expiry);",
+              "            console.log(`  Token expires: ${expiryDate.toLocaleString()}`);",
+              "        }",
+              "    } else {",
+              "        console.log(\"❌ Session creation failed:\", response.status);",
+              "    }",
+              "} else {",
+              "    console.log(\"❌ Request failed with status:\", pm.response.code);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": {{user_id}},\n  \"recipeUserId\": {{recipe_user_id}},\n  \"userDataInJWT\": {},\n  \"userDataInDatabase\": {},\n  \"enableAntiCsrf\": false,\n  \"tenantId\": \"public\"\n}"
+        },
+        "url": {
+          "raw": "{{api}}/recipe/session",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "recipe",
+            "session"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "create_session",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": {{user_id}},\n  \"recipeUserId\": {{recipe_user_id}},\n  \"userDataInJWT\": {},\n  \"userDataInDatabase\": {},\n  \"enableAntiCsrf\": false,\n  \"tenantId\": \"public\"\n}"
+            },
+            "url": {
+              "raw": "{{api}}/recipe/session",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "recipe",
+                "session"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "1596"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 04 Jun 2026 15:02:28 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"session\": {\n        \"handle\": \"4908a741-4780-400f-8add-d9e951718590\",\n        \"userId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n        \"recipeUserId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n        \"userDataInJWT\": {},\n        \"tenantId\": \"public\"\n    },\n    \"accessToken\": {\n        \"token\": \"eyJraWQiOiJkLTE3ODA1NjgwMDY5MDAiLCJ0eXAiOiJKV1QiLCJ2ZXJzaW9uIjoiNSIsImFsZyI6IlJTMjU2In0.eyJpYXQiOjE3ODA1ODUzNDgsImV4cCI6MTc4MDU4ODk0OCwic3ViIjoiZTdlZWFkNDktZTRjMy00ZjZkLTgzN2MtOWFmOTNkOGI5Mzg2IiwidElkIjoicHVibGljIiwicnN1YiI6ImU3ZWVhZDQ5LWU0YzMtNGY2ZC04MzdjLTlhZjkzZDhiOTM4NiIsInNlc3Npb25IYW5kbGUiOiI0OTA4YTc0MS00NzgwLTQwMGYtOGFkZC1kOWU5NTE3MTg1OTAiLCJyZWZyZXNoVG9rZW5IYXNoMSI6IjgxYzQ5NWVhZjU0OTIzOTdhZGYyOTRiMzAzMDFkZGViN2JmYzYxZTUxYzRjYWI3Y2E5NmY5YWY1ZjIyMjllZGMiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6bnVsbCwiYW50aUNzcmZUb2tlbiI6bnVsbH0.blMTN8psn2FBqXkXGL4qliDwQSE6TbXvumiDvzMbmsuz8Y8G8eZUYPJee1ZD3t5PPQGGFP8qSHM6Jl91mX6GRTv0NCDfzlhZd-q78tepztaxNbU7TCsuThGtingmEwVio45_8vaFWSPOIeNC7b1zrzy1iBh2-8gu22dVdy1uX_5wS5lMiG3dHLy7heUKto6OxEfmFCak2dAlFA1uPtIZZ7L_doXtCAYt-SA2DQ4ZEsgzCBjQw11ibMRaEAx1i-I_qYk6dIrsRwumY-I81ZYUhJUXKlHu113oDIZjPa3kEGDvcgaIjM8V6YbBpfqdGJ4WWmUIqAOo6rhMd2OP9sbv7w\",\n        \"expiry\": 1780588948000,\n        \"createdTime\": 1780585348000\n    },\n    \"refreshToken\": {\n        \"token\": \"UASGaC/89uNX36DWuIxwad4TBNBdPJeB6tKtcm4is3vFyXaDI3BGlkqIRmSRbprGZ9WaxmhuhHL1qrCbkTTUaRV6PNykJzJuWp/FbAp+p+PwSlz8djONj5y7zGGf7njozhsOghxosSnDSiNjAgPMMCl5P6HlSYNjk/NPBIYhFYIf/y3kjOLkiqrCpeFnOU+kehUzXVvrUhz+vXJDa2EZLJlrVra6h9nJVy20UidGydGHKe6x4vvbOxJAs7yW+tfxKITCS0RcnitIQ07549Q4.a071ae66557de64cb88a92253e06cbe92badece17297113196e68ecd16155825.V2\",\n        \"expiry\": 1789225348435,\n        \"createdTime\": 1780585348435\n    },\n    \"status\": \"OK\"\n}"
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "port",
+      "value": ""
+    },
+    {
+      "key": "api",
+      "value": ""
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    },
+    {
+      "key": "session_handle",
+      "value": ""
+    },
+    {
+      "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "recipe_user_id",
+      "value": ""
+    },
+    {
+      "key": "user_email",
+      "value": ""
+    },
+    {
+      "key": "tenant_id",
+      "value": ""
+    },
+    {
+      "key": "recipe_id",
+      "value": ""
+    },
+    {
+      "key": "user_object",
+      "value": ""
+    }
+  ]
+}
