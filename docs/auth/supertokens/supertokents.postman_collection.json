@@ -321,39 +321,39 @@
           "script": {
             "exec": [
               "if (pm.response.code === 200) {",
-              "    const response = pm.response.json();",
-              "    ",
-              "    if (response.status === \"OK\") {",
-              "        // Save tokens to COLLECTION variables",
-              "        if (response.accessToken?.token) {",
-              "            pm.collectionVariables.set(\"access_token\", response.accessToken.token);",
-              "            console.log(\"✓ Access token saved to collection\");",
-              "        }",
-              "        ",
-              "        if (response.refreshToken?.token) {",
-              "            pm.collectionVariables.set(\"refresh_token\", response.refreshToken.token);",
-              "            console.log(\"✓ Refresh token saved to collection\");",
-              "        }",
-              "        ",
-              "        // Save session info",
-              "        if (response.session?.handle) {",
-              "            pm.collectionVariables.set(\"session_handle\", response.session.handle);",
-              "        }",
-              "        ",
-              "        if (response.session?.userId) {",
-              "            pm.collectionVariables.set(\"user_id\", response.session.userId);",
-              "        }",
-              "        ",
-              "        // Log expiry",
-              "        if (response.accessToken?.expiry) {",
-              "            const expiryDate = new Date(response.accessToken.expiry);",
-              "            console.log(`  Token expires: ${expiryDate.toLocaleString()}`);",
-              "        }",
-              "    } else {",
-              "        console.log(\"❌ Session creation failed:\", response.status);",
-              "    }",
+              "\tconst response = pm.response.json();",
+              "",
+              "\tif (response.status === \"OK\") {",
+              "\t\t// Save tokens to COLLECTION variables",
+              "\t\tif (response.accessToken?.token) {",
+              "\t\t\tpm.collectionVariables.set(\"access_token\", response.accessToken.token);",
+              "\t\t\tconsole.log(\"✓ Access token saved to collection\");",
+              "\t\t}",
+              "",
+              "\t\tif (response.refreshToken?.token) {",
+              "\t\t\tpm.collectionVariables.set(\"refresh_token\", response.refreshToken.token);",
+              "\t\t\tconsole.log(\"✓ Refresh token saved to collection\");",
+              "\t\t}",
+              "",
+              "\t\t// Save session info",
+              "\t\tif (response.session?.handle) {",
+              "\t\t\tpm.collectionVariables.set(\"session_handle\", response.session.handle);",
+              "\t\t}",
+              "",
+              "\t\tif (response.session?.userId) {",
+              "\t\t\tpm.collectionVariables.set(\"user_id\", response.session.userId);",
+              "\t\t}",
+              "",
+              "\t\t// Log expiry",
+              "\t\tif (response.accessToken?.expiry) {",
+              "\t\t\tconst expiryDate = new Date(response.accessToken.expiry);",
+              "\t\t\tconsole.log(`  Token expires: ${expiryDate.toLocaleString()}`);",
+              "\t\t}",
+              "\t} else {",
+              "\t\tconsole.log(\"❌ Session creation failed:\", response.status);",
+              "\t}",
               "} else {",
-              "    console.log(\"❌ Request failed with status:\", pm.response.code);",
+              "\tconsole.log(\"❌ Request failed with status:\", pm.response.code);",
               "}"
             ],
             "type": "text/javascript",
@@ -367,7 +367,12 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"userId\": {{user_id}},\n  \"recipeUserId\": {{recipe_user_id}},\n  \"userDataInJWT\": {},\n  \"userDataInDatabase\": {},\n  \"enableAntiCsrf\": false,\n  \"tenantId\": \"public\"\n}"
+          "raw": "{\n\t\"userId\": {{user_id}},\n\t\"recipeUserId\": {{recipe_user_id}},\n\t\"userDataInJWT\": {\n\t\t\"device\": \"MacBook\",\n\t\t\"browser\": \"Chrome\",\n\t\t\"role\": \"admin\",\n\t\t\"premium\": true\n\t},\n\t\"userDataInDatabase\": {\n\t\t\"ipAtLogin\": \"1.1.1.1\",\n\t\t\"deviceInfo\": \"Ubuntu/Firefox\"\n\t},\n\t\"enableAntiCsrf\": false,\n\t\"tenantId\": \"public\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{api}}/recipe/session",
@@ -430,6 +435,473 @@
           "body": "{\n    \"session\": {\n        \"handle\": \"4908a741-4780-400f-8add-d9e951718590\",\n        \"userId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n        \"recipeUserId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n        \"userDataInJWT\": {},\n        \"tenantId\": \"public\"\n    },\n    \"accessToken\": {\n        \"token\": \"eyJraWQiOiJkLTE3ODA1NjgwMDY5MDAiLCJ0eXAiOiJKV1QiLCJ2ZXJzaW9uIjoiNSIsImFsZyI6IlJTMjU2In0.eyJpYXQiOjE3ODA1ODUzNDgsImV4cCI6MTc4MDU4ODk0OCwic3ViIjoiZTdlZWFkNDktZTRjMy00ZjZkLTgzN2MtOWFmOTNkOGI5Mzg2IiwidElkIjoicHVibGljIiwicnN1YiI6ImU3ZWVhZDQ5LWU0YzMtNGY2ZC04MzdjLTlhZjkzZDhiOTM4NiIsInNlc3Npb25IYW5kbGUiOiI0OTA4YTc0MS00NzgwLTQwMGYtOGFkZC1kOWU5NTE3MTg1OTAiLCJyZWZyZXNoVG9rZW5IYXNoMSI6IjgxYzQ5NWVhZjU0OTIzOTdhZGYyOTRiMzAzMDFkZGViN2JmYzYxZTUxYzRjYWI3Y2E5NmY5YWY1ZjIyMjllZGMiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6bnVsbCwiYW50aUNzcmZUb2tlbiI6bnVsbH0.blMTN8psn2FBqXkXGL4qliDwQSE6TbXvumiDvzMbmsuz8Y8G8eZUYPJee1ZD3t5PPQGGFP8qSHM6Jl91mX6GRTv0NCDfzlhZd-q78tepztaxNbU7TCsuThGtingmEwVio45_8vaFWSPOIeNC7b1zrzy1iBh2-8gu22dVdy1uX_5wS5lMiG3dHLy7heUKto6OxEfmFCak2dAlFA1uPtIZZ7L_doXtCAYt-SA2DQ4ZEsgzCBjQw11ibMRaEAx1i-I_qYk6dIrsRwumY-I81ZYUhJUXKlHu113oDIZjPa3kEGDvcgaIjM8V6YbBpfqdGJ4WWmUIqAOo6rhMd2OP9sbv7w\",\n        \"expiry\": 1780588948000,\n        \"createdTime\": 1780585348000\n    },\n    \"refreshToken\": {\n        \"token\": \"UASGaC/89uNX36DWuIxwad4TBNBdPJeB6tKtcm4is3vFyXaDI3BGlkqIRmSRbprGZ9WaxmhuhHL1qrCbkTTUaRV6PNykJzJuWp/FbAp+p+PwSlz8djONj5y7zGGf7njozhsOghxosSnDSiNjAgPMMCl5P6HlSYNjk/NPBIYhFYIf/y3kjOLkiqrCpeFnOU+kehUzXVvrUhz+vXJDa2EZLJlrVra6h9nJVy20UidGydGHKe6x4vvbOxJAs7yW+tfxKITCS0RcnitIQ07549Q4.a071ae66557de64cb88a92253e06cbe92badece17297113196e68ecd16155825.V2\",\n        \"expiry\": 1789225348435,\n        \"createdTime\": 1780585348435\n    },\n    \"status\": \"OK\"\n}"
         }
       ]
+    },
+    {
+      "name": "verify_session",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const response = pm.response.json();",
+              "    ",
+              "    if (response.status === \"OK\" && response.session) {",
+              "        // Save session information",
+              "        pm.collectionVariables.set(\"verified_session_handle\", response.session.handle);",
+              "        pm.collectionVariables.set(\"verified_user_id\", response.session.userId);",
+              "        ",
+              "        console.log(\"✅ Session verified successfully!\");",
+              "        console.log(\"  Session Handle:\", response.session.handle);",
+              "        console.log(\"  User ID:\", response.session.userId);",
+              "        console.log(\"  Tenant ID:\", response.session.tenantId);",
+              "    } else {",
+              "        console.log(\"❌ Verification failed:\", response.status);",
+              "    }",
+              "} else if (pm.response.code === 401) {",
+              "    console.log(\"❌ Token expired or invalid\");",
+              "    console.log(\"  → Create a new session with POST /recipe/session\");",
+              "} else {",
+              "    console.log(\"❌ Request failed with status:\", pm.response.code);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const accessToken = pm.collectionVariables.get(\"access_token\");",
+              "",
+              "if (!accessToken) {",
+              "    console.log(\"❌ No access token found! Run 'Create Session' first.\");",
+              "} else {",
+              "    // Set the request body",
+              "    pm.request.body.raw = JSON.stringify({",
+              "        accessToken: accessToken,",
+              "        doAntiCsrfCheck: false,",
+              "        enableAntiCsrf: false,",
+              "        checkDatabase: true",
+              "    });",
+              "    ",
+              "    console.log(\"✓ Added access token to request body\");",
+              "}",
+              "",
+              "// Add required headers",
+              "pm.request.headers.add({ key: \"rid\", value: \"session\" });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "rid",
+            "value": "session",
+            "description": "Many SuperTokens Core API endpoints need the rid (recipe ID) header to route the request ",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"accessToken\": \"{{access_token}}\",\n\t\"doAntiCsrfCheck\": false,\n\t\"enableAntiCsrf\": false, \n\t\"checkDatabase\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{api}}/recipe/session/verify",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "recipe",
+            "session",
+            "verify"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "verify_session",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "rid",
+                "value": "session",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"accessToken\": \"{{access_token}}\",\n\t\"doAntiCsrfCheck\": false,\n\t\"enableAntiCsrf\": false, \n\t\"checkDatabase\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api}}/recipe/session/verify",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "recipe",
+                "session",
+                "verify"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "217"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 05 Jun 2026 09:19:31 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [
+            {
+              "expires": "Invalid Date",
+              "domain": "",
+              "path": ""
+            }
+          ],
+          "body": "{\n    \"session\": {\n        \"handle\": \"13dcecd6-d8c4-48b9-8e30-7f1528acf566\",  // Unique session identifier\n        \"userId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\", // Primary user ID\n        \"recipeUserId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\", // Recipe-specific ID\n        \"userDataInJWT\": {},  // Custom data you stored in the JWT\n        \"tenantId\": \"public\" // Tenant identifier\n    },\n    \"status\": \"OK\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "refresh_session",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "\tconst response = pm.response.json();",
+              "",
+              "\tif (response.status === \"OK\") {",
+              "\t\t// Update collection variables with new tokens",
+              "\t\tif (response.accessToken?.token) {",
+              "\t\t\tpm.collectionVariables.set(\"access_token\", response.accessToken.token);",
+              "\t\t\tconsole.log(\"✓ Access token updated\");",
+              "",
+              "\t\t\t// Log expiry",
+              "\t\t\tif (response.accessToken.expiry) {",
+              "\t\t\t\tconst expiryDate = new Date(response.accessToken.expiry);",
+              "\t\t\t\tconsole.log(\"  New access token expires:\", expiryDate.toLocaleString());",
+              "\t\t\t}",
+              "\t\t}",
+              "",
+              "\t\tif (response.refreshToken?.token) {",
+              "\t\t\tpm.collectionVariables.set(\"refresh_token\", response.refreshToken.token);",
+              "\t\t\tconsole.log(\"✓ Refresh token updated\");",
+              "",
+              "\t\t\tif (response.refreshToken.expiry) {",
+              "\t\t\t\tconst expiryDate = new Date(response.refreshToken.expiry);",
+              "\t\t\t\tconsole.log(\"  New refresh token expires:\", expiryDate.toLocaleString());",
+              "\t\t\t}",
+              "\t\t}",
+              "",
+              "\t\t// Session handle should remain the same",
+              "\t\tif (response.session?.handle) {",
+              "\t\t\tconsole.log(\"✓ Session handle unchanged:\", response.session.handle);",
+              "\t\t}",
+              "",
+              "\t\tconsole.log(\"✅ Session refresh complete!\");",
+              "",
+              "\t} else {",
+              "\t\tconsole.log(\"❌ Refresh failed:\", response.status);",
+              "\t}",
+              "} else if (pm.response.code === 401) {",
+              "\tconsole.log(\"❌ Refresh token expired or invalid\");",
+              "\tconsole.log(\"  → User must sign in again\");",
+              "\t// Clear invalid tokens",
+              "\tpm.collectionVariables.set(\"access_token\", \"\");",
+              "\tpm.collectionVariables.set(\"refresh_token\", \"\");",
+              "} else {",
+              "\tconsole.log(\"❌ Request failed with status:\", pm.response.code);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "rid",
+            "value": "session",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"refreshToken\": \"{{refresh_token}}\",\n\t\"enableAntiCsrf\": false,\n\t\"useDynamicSigningKey\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{api}}/recipe/session/refresh",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "recipe",
+            "session",
+            "refresh"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "refresh_session",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "rid",
+                "value": "session",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"refreshToken\": \"{{refresh_token}}\",\n\t\"enableAntiCsrf\": false,\n\t\"useDynamicSigningKey\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api}}/recipe/session/refresh",
+              "host": [
+                "{{api}}"
+              ],
+              "path": [
+                "recipe",
+                "session",
+                "refresh"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "1834"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 05 Jun 2026 09:33:32 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"session\": {\n        \"handle\": \"13dcecd6-d8c4-48b9-8e30-7f1528acf566\",\n        \"userId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n        \"recipeUserId\": \"e7eead49-e4c3-4f6d-837c-9af93d8b9386\",\n        \"userDataInJWT\": {},\n        \"tenantId\": \"public\"\n    },\n    \"accessToken\": {\n        \"token\": \"eyJraWQiOiJzLTA3YmVmNjA1LWRhN2UtNDM2Zi04OWEzLWUwOGM5ZGExMDczNiIsInR5cCI6IkpXVCIsInZlcnNpb24iOiI1IiwiYWxnIjoiUlMyNTYifQ.eyJpYXQiOjE3ODA2NTIwMTIsImV4cCI6MTc4MDY1NTYxMiwic3ViIjoiZTdlZWFkNDktZTRjMy00ZjZkLTgzN2MtOWFmOTNkOGI5Mzg2IiwidElkIjoicHVibGljIiwicnN1YiI6ImU3ZWVhZDQ5LWU0YzMtNGY2ZC04MzdjLTlhZjkzZDhiOTM4NiIsInNlc3Npb25IYW5kbGUiOiIxM2RjZWNkNi1kOGM0LTQ4YjktOGUzMC03ZjE1MjhhY2Y1NjYiLCJyZWZyZXNoVG9rZW5IYXNoMSI6IjEyMjBkNWNhM2Y0MDg2NDY0ZjlhODFlNzQ0NDlhNDMxYmUxYjMzYTBiNGM0MTQxNTFhMzNiNWJiNzI0NGIzYTUiLCJwYXJlbnRSZWZyZXNoVG9rZW5IYXNoMSI6ImM5NDY5MDM4YWE5YjJjNGY0ZjE4MzgzYTI0MmEyMmIxODYzNDVmNWQ2ZDQ5MmViODhiMDIxYTExNjUzZjE1NTYiLCJhbnRpQ3NyZlRva2VuIjpudWxsfQ.SN030POmvNuNQHGtk8ujk-L3r2HhFaHWJ4RhvvZAvP22l4HuLyArSvXVK9rpLH2z6bwdZW1Boscwzbmap3mEGeu8A_D3XZivw_X48uY_QA9Z_iDLKEy_IxEYLu5D-cSCvYznB2TyGvPyA_rPSqEe4zubJA_ODnrqvKcHrxtJs6NmiMvSvBT2XnEtGjqY_snXaGOFTEzQA0pKKs2ac1utS22mijFXKkGVZCDyifeH32MxVgAttaOanCryuNoUSLTPv1ajqHB5QP8vpbUAycHezwZcc6-ggue1kUIk8o8xjCcqOh9gDyORInAS7b8WlIhNOTbPhRjSljaOHTQbN_aLxA\",\n        \"expiry\": 1780655612000,\n        \"createdTime\": 1780652012000\n    },\n    \"refreshToken\": {\n        \"token\": \"8WNXnQSReeIjE2rU2A/N8DJxTJZ3JHm8NNVFjvLowzs98k8xGrivgi+7Xx/r8CHb1DCo5nWEFsTbbxjHoh5aTapBQxFFHRlslQzqwYkKEpild5aomXplNTaDqEBMljt9iDpLDCR1zc1i2cGjFGHNjlNvoA8yQzLCiLBiyyS5VllwgeLP7vouYKQzfOwjkwMF25KQwi6tSiRWOToqPO6K4LSuQ3HgkZqYb3ZEHvD3XrQuET0c2NW+ewcvFqbrmekpJMexLZbIFBo+w9TET2ZHJTbdPHP+1eLRWrxbEDEeIzV7C7zxbnyek5kZ+xfCaqk5BaRIfhdiIdHGaS4ZHzEU4sP0zcW4rs10i6kKm0nD0YLCfas84/rCcxYjN7HZ6HDNW243VWPkoQ3bP9uF.2e92eb85872f0651c7b91a7bd3d4c7c1ea14c8b0ca9447e0c1b93d242e411c34.V2\",\n        \"expiry\": 1789292012320,\n        \"createdTime\": 1780652012320\n    },\n    \"status\": \"OK\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "get_all_sessions",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const response = pm.response.json();",
+              "    ",
+              "    if (response.status === \"OK\") {",
+              "        console.log(\"✅ Session details retrieved\");",
+              "        console.log(`  Session Handle: ${response.sessionHandle}`);",
+              "        console.log(`  User ID: ${response.userId}`);",
+              "        console.log(`  Tenant ID: ${response.tenantId}`);",
+              "        ",
+              "        // Calculate and log session age",
+              "        if (response.timeCreated) {",
+              "            const createdDate = new Date(response.timeCreated);",
+              "            const now = new Date();",
+              "            const ageDays = (now - createdDate) / 1000 / 60 / 60 / 24;",
+              "            console.log(`  Created: ${createdDate.toLocaleString()}`);",
+              "            console.log(`  Age: ${ageDays.toFixed(1)} days`);",
+              "        }",
+              "        ",
+              "        // Calculate and log time until expiry",
+              "        if (response.expiry) {",
+              "            const expiryDate = new Date(response.expiry);",
+              "            const daysLeft = (response.expiry - Date.now()) / 1000 / 60 / 60 / 24;",
+              "            console.log(`  Expires: ${expiryDate.toLocaleString()}`);",
+              "            console.log(`  Days remaining: ${daysLeft.toFixed(1)}`);",
+              "        }",
+              "        ",
+              "        // Save for later use",
+              "        pm.collectionVariables.set(\"current_session_handle\", response.sessionHandle);",
+              "        ",
+              "    } else {",
+              "        console.log(\"❌ Failed:\", response.status);",
+              "    }",
+              "} else if (pm.response.code === 404) {",
+              "    console.log(\"❌ Session not found (may have been revoked)\");",
+              "} else {",
+              "    console.log(\"❌ Request failed with status:\", pm.response.code);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const sessionHandle = pm.collectionVariables.get(\"session_handle\") || ",
+              "                      pm.collectionVariables.get(\"current_session_handle\");",
+              "",
+              "if (!sessionHandle) {",
+              "    console.log(\"❌ No session handle found!\");",
+              "    console.log(\"  Run 'Create Session' or 'Refresh' first to get a session handle\");",
+              "} else {",
+              "\t const baseUrl = pm.collectionVariables.get(\"api\") || \"http://localhost:3567\";",
+              "    const url = `${baseUrl}/recipe/session?sessionHandle=${sessionHandle}`;",
+              "    pm.request.url = url;",
+              "    ",
+              "    console.log(\"✓ Session handle added:\", sessionHandle);",
+              "}",
+              "",
+              "// Add required header",
+              "pm.request.headers.add({ key: \"rid\", value: \"session\" });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "rid",
+            "value": "session",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{api}}/recipe/session?sessionHandle={{session_handle}}",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "recipe",
+            "session"
+          ],
+          "query": [
+            {
+              "key": "sessionHandle",
+              "value": "{{session_handle}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "signout",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "rid",
+            "value": "session",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"userId\": \"{{user_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{api}}/recipe/session/remove",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "recipe",
+            "session",
+            "remove"
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "event": [
@@ -503,6 +975,18 @@
     },
     {
       "key": "user_object",
+      "value": ""
+    },
+    {
+      "key": "verified_session_handle",
+      "value": ""
+    },
+    {
+      "key": "verified_user_id",
+      "value": ""
+    },
+    {
+      "key": "current_session_handle",
       "value": ""
     }
   ]
