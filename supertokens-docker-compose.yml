@@ -20,7 +20,13 @@ services:
     ports:
       - "3567:3567"           # Core API — your app SDK connects here
     environment:
-      POSTGRESQL_CONNECTION_URI: "postgresql://${SUPERTOKENS_PG_USER}:${SUPERTOKENS_PG_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${SUPERTOKENS_PG_DB}?search_path=${SUPERTOKENS_PG_SCHEMA}"
+      POSTGRESQL_USER: ${SUPERTOKENS_PG_USER}
+      POSTGRESQL_PASSWORD: ${SUPERTOKENS_PG_PASSWORD}
+      POSTGRESQL_HOST: ${POSTGRES_CONTAINER}
+      POSTGRESQL_PORT: ${POSTGRES_PORT}
+      POSTGRESQL_DATABASE_NAME: ${SUPERTOKENS_PG_DB}
+      POSTGRESQL_TABLE_SCHEMA: ${SUPERTOKENS_PG_SCHEMA}  # This is the key fix
+      # POSTGRESQL_CONNECTION_URI: "postgresql://${SUPERTOKENS_PG_USER}:${SUPERTOKENS_PG_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${SUPERTOKENS_PG_DB}?search_path=${SUPERTOKENS_PG_SCHEMA}"
       # Uncomment to require an API key on every core request:
       # API_KEYS: ${SUPERTOKENS_API_KEY}
     networks:
@@ -38,4 +44,4 @@ services:
 networks:
   db_network:
     external: true
-    name: database_db_network
+    name: db_network

@@ -1,5 +1,4 @@
 services:
-
   mariadb:
     env_file:
       - .env
@@ -30,8 +29,8 @@ services:
           mariadb-admin ping -h 127.0.0.1 --user=root --password=$${MARIADB_ROOT_PASSWORD} --silent
       interval: 5s
       timeout: 3s
-      retries: 5          # 3 is often too low on slow boxes
-      start_period: 45s   # give InnoDB time to start
+      retries: 5
+      start_period: 45s
 
   mysql:
     env_file:
@@ -135,6 +134,5 @@ volumes:
 
 networks:
   db_network:
+    name: db_network
     driver: bridge
-
-
