@@ -17,6 +17,11 @@
     <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter08_04_multicolumn_grouping.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter08_05_rollup.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter08_exercie.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter09_01_subquery.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter09_02_multirow_singlecolumn_subqueries.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter09_03_all_operator.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter09_04_any_operator.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/scripts/mysql/01_learning_mysql/chapter09_05_multicolumn_subquery.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/supertokens_prepare_database.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/zitadel_prepare_database.sql" dialect="PostgreSQL" />
     <file url="PROJECT" dialect="MySQL" />
