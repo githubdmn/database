@@ -1,0 +1,38 @@
+services:
+  authelia:
+    image: authelia/authelia:4.39
+    container_name: authelia
+    restart: unless-stopped
+    expose:
+      - "9091"
+    environment:
+      TZ: UTC
+      AUTHELIA_JWT_SECRET_FILE: /secrets/jwt_secret.txt
+      AUTHELIA_SESSION_SECRET_FILE: /secrets/session_secret.txt
+      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: /secrets/storage_encryption_key.txt
+    volumes:
+      - ./config:/config
+      - ./secrets:/secrets:ro
+    networks:
+      - traefik_proxy
+    labels:
+      # Router for Authelia portal
+      traefik.enable: "true"
+      traefik.http.routers.authelia.rule: "Host(`auth.local.test`)"
+      traefik.http.routers.authelia.entrypoints: "websecure"
+      traefik.http.routers.authelia.tls: "true"                # Self-signed
+      # traefik.http.routers.authelia.tls.certresolver: "localresolver"
+      # traefik.http.routers.authelia.entrypoints: "web"
+      traefik.http.services.authelia.loadbalancer.server.port: "9091"
+      # Explicitly tell Traefik which network to use for this service
+      traefik.docker.network: "traefik_proxy"
+
+      # ForwardAuth middleware for OTHER services to use
+      traefik.http.middlewares.authelia.forwardauth.address: "http://authelia:9091/api/authz/forward-auth"
+      traefik.http.middlewares.authelia.forwardauth.trustForwardHeader: "true"
+      traefik.http.middlewares.authelia.forwardauth.authResponseHeaders: "Remote-User,Remote-Groups,Remote-Name,Remote-Email"
+
+networks:
+  traefik_proxy:
+    name: traefik_proxy
+    external: true

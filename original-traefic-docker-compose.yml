@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  # --- 1. The Reverse Proxy (Traefik) ---
+  traefik:
+    image: traefik:v3.1
+    command:
+      # Enable Docker as the "Provider" (Traefik will listen to Docker events)
+      - "--providers.docker=true"
+      # Security Best Practice: Don't automatically expose every container.
+      # We must explicitly label containers we want to expose.
+      - "--providers.docker.exposedbydefault=false"
+      # Define an "EntryPoint" named 'web' listening on port 80
+      - "--entrypoints.web.address=:80"
+      # Enable the Dashboard/API on port 8080 (Insecure mode for local dev)
+      - "--api.insecure=true"
+    ports:
+      - "80:80"           # Maps host port 80 to Traefik's 'web' EntryPoint
+      - "127.0.0.1:8080:8080" # Maps ONLY localhost:8080 to the Dashboard.
+      # Binding to 127.0.0.1 keeps it secure from your local network!
+    volumes:
+      # The magic cord: Allows Traefik to listen to Docker container start/stop events
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - proxy
+
+  # --- 2. The Backend App (Whoami) ---
+  whoami:
+    image: traefik/whoami # A simple web server that prints request details
+    labels:
+      # 1. Tell Traefik to look at this container
+      - "traefik.enable=true"
+
+      # 2. Define a ROUTER named 'whoami-router'
+      # Rule: If the HTTP Host header matches 'whoami.local', use this router
+      - "traefik.http.routers.whoami-router.rule=Host(`whoami.local`)"
+
+      # 3. Tell the router to use the 'web' EntryPoint we defined above (Port 80)
+      - "traefik.http.routers.whoami-router.entrypoints=web"
+
+      # Note: We don't need to define a SERVICE!
+      # Traefik automatically creates a service pointing to this container's IP.
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: traefik_proxy # Give the network a predictable name

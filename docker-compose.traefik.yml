@@ -1,0 +1,45 @@
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik_proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "127.0.0.1:8080:8080"   # Dashboard localhost-only
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - ./letsencrypt:/letsencrypt
+    networks:
+      - traefik_proxy
+    command:
+      # Docker provider
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik_proxy"
+
+      # EntryPoints
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+
+      # Dashboard (insecure for now — we'll secure with Authelia later)
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      # Self-signed TLS cert for ALL websecure services
+      - "--entrypoints.websecure.http.tls=true"
+
+      # ACME / Let's Encrypt (staging for local dev)
+      #- "--certificatesresolvers.localresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.localresolver.acme.email=admin@local.dev"
+      #- "--certificatesresolvers.localresolver.acme.storage=/letsencrypt/acme.json"
+      #- "--certificatesresolvers.localresolver.acme.caserver=https:/_/acme-staging-v02.api.letsencrypt.org/directory"
+
+      # Global redirect HTTP → HTTPS
+      #- "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      #- "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      #- "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+
+networks:
+  traefik_proxy:
+    name: traefik_proxy
+    driver: bridge

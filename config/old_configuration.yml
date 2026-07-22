@@ -1,0 +1,56 @@
+theme: light
+
+server:
+  host: 0.0.0.0
+  port: 9091
+
+log:
+  level: debug
+
+totp:
+  issuer: authelia.com
+
+# 1. AUTHENTICATION: Where users are stored
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+# 2. ACCESS CONTROL: Who can access what
+access_control:
+  default_policy: deny
+  rules:
+    # Allow access to the login portal itself
+    - domain: "login.localhost"
+      policy: bypass
+    # Protect everything else (we will add apps later)
+    - domain: "*.localhost"
+      policy: one_factor
+
+# 3. SESSIONS: Using your EXISTING Redis container
+session:
+  name: authelia_session
+  secret: unsecure_session_secret # Change this in production!
+  expiration: 1h
+  inactivity: 5m
+  domain: localhost
+  redis:
+    host: general_redis
+    port: 6379
+    # password: ${REDIS_PASSWORD} # If your Redis requires a password, add it here
+
+# 4. REGULATION: Prevent brute force
+regulation:
+  max_retries: 3
+  find_time: 2m
+  ban_time: 5m
+
+# 5. STORAGE: Using SQLITE (The independent part!)
+storage:
+  encryption_key: a_very_important_secret # Change this in production!
+  local:
+    path: /config/db.sqlite3
+
+# 6. NOTIFIER: Where 2FA codes/emails go (Filesystem for testing)
+notifier:
+  filesystem:
+    filename: /config/notification.txt
